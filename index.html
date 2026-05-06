@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Station | Luxury Apartment Rentals in Miami</title>
+    <meta name="description" content="Square Station offers luxury apartment rentals at 1424 NE Miami Place. Directly across from the School Board Metromover Station. Granite countertops, stainless steel appliances, 80ft lap pool, fitness center.">
+    <link rel="icon" type="image/png" href="images/icon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        steel: {
+                            900: '#1a2530',
+                            800: '#243545',
+                            700: '#2e4558',
+                            600: '#3A5F77',
+                            500: '#39a3de',
+                            400: '#5BB8E8',
+                            300: '#7ECBEF',
+                        },
+                        slate: {
+                            850: '#435061',
+                        }
+                    },
+                    fontFamily: {
+                        'heading': ['Montserrat', 'system-ui', 'sans-serif'],
+                        'body': ['Lato', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .fade-in.visible { opacity: 1; }
+
+        /* Hero slideshow */
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-slide.active { opacity: 1; }
+
+        /* Sticky nav */
+        .nav-scrolled {
+            background: rgba(26, 37, 48, 0.98) !important;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Gallery grid */
+        .gallery-item {
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        .gallery-item .overlay {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Floorplan cards */
+        .floorplan-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .floorplan-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.92);
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+        }
+
+        .accent-line {
+            width: 60px;
+            height: 3px;
+            background: #39a3de;
+        }
+
+        /* Feature list checkmarks */
+        .feature-check::before {
+            content: '✓';
+            color: #39a3de;
+            font-weight: 700;
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 font-body">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent">
+        <div class="max-w-[1200px] mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#home" class="flex items-center">
+                <img src="images/logo.png" alt="Square Station" class="h-10 md:h-12">
+            </a>
+            <!-- Desktop Nav -->
+            <ul class="hidden md:flex items-center gap-6 lg:gap-8">
+                <li><a href="#home" class="text-white/90 hover:text-steel-400 text-xs font-heading font-semibold tracking-widest uppercase transition-colors">Home</a></li>
+                <li><a href="#features" class="text-white/90 hover:text-steel-400 text-xs font-heading font-semibold tracking-widest uppercase transition-colors">Features</a></li>
+                <li><a href="#floorplans" class="text-white/90 hover:text-steel-400 text-xs font-heading font-semibold tracking-widest uppercase transition-colors">Floorplans</a></li>
+                <li><a href="#gallery" class="text-white/90 hover:text-steel-400 text-xs font-heading font-semibold tracking-widest uppercase transition-colors">Gallery</a></li>
+                <li><a href="brochure.pdf" target="_blank" class="text-white/90 hover:text-steel-400 text-xs font-heading font-semibold tracking-widest uppercase transition-colors">Brochure</a></li>
+                <li><a href="#contact" class="bg-steel-500 hover:bg-steel-400 text-white px-5 py-2.5 rounded text-xs font-heading font-semibold tracking-widest uppercase transition-colors">Contact</a></li>
+            </ul>
+            <!-- Phone number -->
+            <a href="tel:3058001400" class="hidden lg:flex items-center gap-2 text-white/80 hover:text-white text-sm transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                305.800.1400
+            </a>
+            <!-- Mobile Menu Button -->
+            <button id="menuBtn" class="md:hidden text-white p-2" aria-label="Toggle menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden hidden bg-steel-900/98 backdrop-blur-lg border-t border-white/10">
+            <ul class="flex flex-col items-center py-6 gap-4">
+                <li><a href="#home" class="text-white/90 text-sm font-heading font-semibold tracking-widest uppercase">Home</a></li>
+                <li><a href="#features" class="text-white/90 text-sm font-heading font-semibold tracking-widest uppercase">Features</a></li>
+                <li><a href="#floorplans" class="text-white/90 text-sm font-heading font-semibold tracking-widest uppercase">Floorplans</a></li>
+                <li><a href="#gallery" class="text-white/90 text-sm font-heading font-semibold tracking-widest uppercase">Gallery</a></li>
+                <li><a href="brochure.pdf" target="_blank" class="text-white/90 text-sm font-heading font-semibold tracking-widest uppercase">Brochure</a></li>
+                <li><a href="#contact" class="bg-steel-500 text-white px-6 py-2.5 rounded text-sm font-heading font-semibold tracking-widest uppercase">Contact</a></li>
+                <li><a href="tel:3058001400" class="text-steel-400 text-sm font-semibold">305.800.1400</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Slideshow -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="hero-slide active" style="background-image: url('images/slideshow1.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('images/slideshow2.jpg');"></div>
+        <div class="hero-slide" style="background-image: url('images/slideshow3.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-steel-900/60 via-steel-900/40 to-steel-900/70 z-10"></div>
+        <div class="relative z-20 text-center px-6 max-w-4xl mx-auto pt-20">
+            <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl text-white font-800 leading-tight mb-4 fade-up tracking-tight">
+                SQUARE<br><span class="text-steel-400">STATION</span>
+            </h1>
+            <div class="w-16 h-[2px] bg-steel-500 mx-auto mb-6 fade-up" style="transition-delay:0.1s;"></div>
+            <p class="text-white/80 text-lg md:text-xl font-light max-w-2xl mx-auto mb-4 fade-up" style="transition-delay: 0.2s;">
+                Luxury Apartment Rentals in Miami
+            </p>
+            <p class="text-white/50 text-sm tracking-widest uppercase font-heading mb-10 fade-up" style="transition-delay: 0.3s;">
+                1424 NE Miami Place
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center fade-up" style="transition-delay: 0.4s;">
+                <a href="#gallery" class="bg-steel-500 hover:bg-steel-400 text-white px-8 py-4 rounded text-xs font-heading font-semibold tracking-widest uppercase transition-all hover:shadow-lg hover:shadow-steel-500/25">
+                    View Gallery
+                </a>
+                <a href="#contact" class="border-2 border-white/30 hover:border-white text-white px-8 py-4 rounded text-xs font-heading font-semibold tracking-widest uppercase transition-all hover:bg-white/10">
+                    Schedule a Tour
+                </a>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-20">
+            <svg class="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About / Intro -->
+    <section class="py-20 md:py-28 bg-white">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <div class="fade-up">
+                    <div class="accent-line mb-6"></div>
+                    <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-steel-900 mb-6 tracking-tight">Urban Living at<br>Its Finest</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                        Square Station is a premier luxury apartment community located at 1424 NE Miami Place. Directly across from the School Board Metromover Station, residents enjoy effortless connectivity to all of Miami's most vibrant neighborhoods.
+                    </p>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                        Each residence features premium finishes including granite countertops, stainless steel appliances, laminated wood floors, and full-sized washer and dryer machines — everything you need for sophisticated urban living.
+                    </p>
+                    <a href="brochure.pdf" target="_blank" class="inline-flex items-center gap-2 text-steel-500 font-semibold hover:text-steel-400 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Download Brochure
+                    </a>
+                </div>
+                <div class="fade-up" style="transition-delay: 0.2s;">
+                    <img src="images/gallery/1.jpg" alt="Square Station exterior" class="rounded-lg shadow-2xl w-full">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features & Amenities -->
+    <section id="features" class="py-20 md:py-28 bg-steel-900 text-white">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="text-center mb-16 fade-up">
+                <div class="accent-line mx-auto mb-6"></div>
+                <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">Features & Amenities</h2>
+                <p class="text-white/50 text-lg max-w-2xl mx-auto">
+                    Premium finishes and world-class amenities for the modern Miami lifestyle.
+                </p>
+            </div>
+
+            <!-- Amenity Highlights -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white/5 rounded-xl p-8 text-center fade-up hover:bg-white/10 transition-colors">
+                    <div class="w-16 h-16 bg-steel-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-8 h-8 text-steel-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-semibold mb-3">Metromover Access</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Directly across from the School Board Metromover Station for effortless city-wide connectivity.</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-8 text-center fade-up hover:bg-white/10 transition-colors" style="transition-delay:0.1s;">
+                    <div class="w-16 h-16 bg-steel-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-8 h-8 text-steel-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-semibold mb-3">80ft Lap Pool</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">A stunning 80-foot lap pool and sun deck — relax and unwind with views of the Miami skyline.</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-8 text-center fade-up hover:bg-white/10 transition-colors" style="transition-delay:0.2s;">
+                    <div class="w-16 h-16 bg-steel-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
+                        <svg class="w-8 h-8 text-steel-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-semibold mb-3">Fitness Center</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Fully equipped on-site fitness center with strength and cardiovascular equipment for every fitness level.</p>
+                </div>
+            </div>
+
+            <!-- Feature List -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 fade-up">
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Granite Counter Tops</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Stainless Steel Appliances</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Double Door Refrigerator</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Laminated Wood Floors</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Porcelain Tiles in Bathrooms</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Full Size Washer & Dryer</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Covered Parking Garage</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Social Room</div>
+                <div class="feature-check flex items-center p-4 bg-white/5 rounded-lg text-white/80 text-sm">Security Remote Control Access</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floorplans -->
+    <section id="floorplans" class="py-20 md:py-28 bg-gray-50">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="text-center mb-16 fade-up">
+                <div class="accent-line mx-auto mb-6"></div>
+                <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-steel-900 mb-4 tracking-tight">Floorplans</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+                    Choose from a variety of thoughtfully designed layouts to suit your lifestyle.
+                </p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="floorplan-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer fade-up" onclick="openLightbox('floorplans/unit-1-2-21-22.jpg')">
+                    <div class="p-5 bg-gray-50"><img src="floorplans/unit-1-2-21-22.jpg" alt="Units 1, 2, 21, 22 Floorplan" class="w-full h-auto"></div>
+                    <div class="bg-steel-900 text-white px-6 py-4 text-center">
+                        <h3 class="font-heading text-sm font-semibold tracking-wider">Units 1, 2, 21, 22</h3>
+                    </div>
+                </div>
+                <div class="floorplan-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer fade-up" style="transition-delay:0.1s;" onclick="openLightbox('floorplans/unit-3-4-23-24.jpg')">
+                    <div class="p-5 bg-gray-50"><img src="floorplans/unit-3-4-23-24.jpg" alt="Units 3, 4, 23, 24 Floorplan" class="w-full h-auto"></div>
+                    <div class="bg-steel-900 text-white px-6 py-4 text-center">
+                        <h3 class="font-heading text-sm font-semibold tracking-wider">Units 3, 4, 23, 24</h3>
+                    </div>
+                </div>
+                <div class="floorplan-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer fade-up" style="transition-delay:0.2s;" onclick="openLightbox('floorplans/unit-5-6.jpg')">
+                    <div class="p-5 bg-gray-50"><img src="floorplans/unit-5-6.jpg" alt="Units 5, 6 Floorplan" class="w-full h-auto"></div>
+                    <div class="bg-steel-900 text-white px-6 py-4 text-center">
+                        <h3 class="font-heading text-sm font-semibold tracking-wider">Units 5, 6</h3>
+                    </div>
+                </div>
+                <div class="floorplan-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer fade-up" onclick="openLightbox('floorplans/unit-7-8.jpg')">
+                    <div class="p-5 bg-gray-50"><img src="floorplans/unit-7-8.jpg" alt="Units 7, 8 Floorplan" class="w-full h-auto"></div>
+                    <div class="bg-steel-900 text-white px-6 py-4 text-center">
+                        <h3 class="font-heading text-sm font-semibold tracking-wider">Units 7, 8</h3>
+                    </div>
+                </div>
+                <div class="floorplan-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer fade-up" style="transition-delay:0.1s;" onclick="openLightbox('floorplans/unit-15-16.jpg')">
+                    <div class="p-5 bg-gray-50"><img src="floorplans/unit-15-16.jpg" alt="Units 15, 16 Floorplan" class="w-full h-auto"></div>
+                    <div class="bg-steel-900 text-white px-6 py-4 text-center">
+                        <h3 class="font-heading text-sm font-semibold tracking-wider">Units 15, 16</h3>
+                    </div>
+                </div>
+                <div class="floorplan-card bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer fade-up" style="transition-delay:0.2s;" onclick="openLightbox('floorplans/unit-17-18.jpg')">
+                    <div class="p-5 bg-gray-50"><img src="floorplans/unit-17-18.jpg" alt="Units 17, 18 Floorplan" class="w-full h-auto"></div>
+                    <div class="bg-steel-900 text-white px-6 py-4 text-center">
+                        <h3 class="font-heading text-sm font-semibold tracking-wider">Units 17, 18</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section id="gallery" class="py-20 md:py-28 bg-white">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="text-center mb-16 fade-up">
+                <div class="accent-line mx-auto mb-6"></div>
+                <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-steel-900 mb-4 tracking-tight">Photo Gallery</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+                    Explore the spaces, amenities, and lifestyle at Square Station.
+                </p>
+            </div>
+
+            <!-- Gallery Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10 fade-up">
+                <button class="gallery-filter active bg-steel-500 text-white px-4 py-2 rounded-full text-xs font-heading font-semibold tracking-wider uppercase transition-all" data-filter="all">All</button>
+                <button class="gallery-filter bg-gray-100 text-gray-600 hover:bg-steel-500 hover:text-white px-4 py-2 rounded-full text-xs font-heading font-semibold tracking-wider uppercase transition-all" data-filter="exterior">Exterior</button>
+                <button class="gallery-filter bg-gray-100 text-gray-600 hover:bg-steel-500 hover:text-white px-4 py-2 rounded-full text-xs font-heading font-semibold tracking-wider uppercase transition-all" data-filter="interior">Interior</button>
+                <button class="gallery-filter bg-gray-100 text-gray-600 hover:bg-steel-500 hover:text-white px-4 py-2 rounded-full text-xs font-heading font-semibold tracking-wider uppercase transition-all" data-filter="amenities">Amenities</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4" id="galleryGrid">
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/1.jpg')">
+                    <img src="images/gallery/1.jpg" alt="Square Station Exterior" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Exterior</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/2.jpg')">
+                    <img src="images/gallery/2.jpg" alt="Building Exterior" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Exterior</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/3.jpg')">
+                    <img src="images/gallery/3.jpg" alt="Street View" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Street View</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/4.jpg')">
+                    <img src="images/gallery/4.jpg" alt="Street View" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Street View</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/6.jpg')">
+                    <img src="images/gallery/6.jpg" alt="Courtyard" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Courtyard</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/7.jpg')">
+                    <img src="images/gallery/7.jpg" alt="Courtyard" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Courtyard</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="amenities" onclick="openLightbox('images/gallery/8.jpg')">
+                    <img src="images/gallery/8.jpg" alt="Pool" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Pool</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="amenities" onclick="openLightbox('images/gallery/9.jpg')">
+                    <img src="images/gallery/9.jpg" alt="Fitness Center" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Fitness Center</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="amenities" onclick="openLightbox('images/gallery/10.jpg')">
+                    <img src="images/gallery/10.jpg" alt="Fitness Center" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Fitness Center</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="amenities" onclick="openLightbox('images/gallery/11.jpg')">
+                    <img src="images/gallery/11.jpg" alt="Common Area" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Common Area</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/12.jpg')">
+                    <img src="images/gallery/12.jpg" alt="Exterior View" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Exterior</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/13.jpg')">
+                    <img src="images/gallery/13.jpg" alt="Exterior View" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Exterior</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="amenities" onclick="openLightbox('images/gallery/14.jpg')">
+                    <img src="images/gallery/14.jpg" alt="Metro Mover" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Metromover</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/15.jpg')">
+                    <img src="images/gallery/15.jpg" alt="Kitchen" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Kitchen</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/16.jpg')">
+                    <img src="images/gallery/16.jpg" alt="Kitchen" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Kitchen</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/ss-2.jpg')">
+                    <img src="images/gallery/ss-2.jpg" alt="Bathroom" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Bathroom</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/ss-3.jpg')">
+                    <img src="images/gallery/ss-3.jpg" alt="Balcony" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Balcony</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/ss-4.jpg')">
+                    <img src="images/gallery/ss-4.jpg" alt="Washer/Dryer" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Washer/Dryer</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/ss-5.jpg')">
+                    <img src="images/gallery/ss-5.jpg" alt="Kitchen" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Kitchen</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="interior" onclick="openLightbox('images/gallery/ss-6.jpg')">
+                    <img src="images/gallery/ss-6.jpg" alt="Kitchen" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Kitchen</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/ss-7.jpg')">
+                    <img src="images/gallery/ss-7.jpg" alt="Building Exterior" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Exterior</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/ss-8.jpg')">
+                    <img src="images/gallery/ss-8.jpg" alt="Courtyard" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Courtyard</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/ss-9.jpg')">
+                    <img src="images/gallery/ss-9.jpg" alt="Courtyard" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Courtyard</span>
+                    </div>
+                </div>
+                <div class="gallery-item rounded-lg relative aspect-square fade-up" data-category="exterior" onclick="openLightbox('images/gallery/ss-12.jpg')">
+                    <img src="images/gallery/ss-12.jpg" alt="Square Station" class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    <div class="overlay absolute inset-0 bg-steel-500/40 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-heading text-xs tracking-widest uppercase">Exterior</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location -->
+    <section id="location" class="py-20 md:py-28 bg-gray-50">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+                <div class="fade-up">
+                    <div class="accent-line mb-6"></div>
+                    <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-steel-900 mb-6 tracking-tight">Location</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                        Square Station is ideally situated at 1424 NE Miami Place, directly across from the School Board Metromover Station. Enjoy instant access to Downtown Miami, Brickell, Midtown, and all of Miami's most vibrant districts.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-10 h-10 bg-steel-500/10 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-steel-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </div>
+                            <p class="text-gray-700">Metromover Station — directly across the street</p>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-10 h-10 bg-steel-500/10 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-steel-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                            </div>
+                            <p class="text-gray-700">Downtown Miami & Brickell — minutes away</p>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm">
+                            <div class="w-10 h-10 bg-steel-500/10 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-steel-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+                            </div>
+                            <p class="text-gray-700">Walkable to dining, entertainment & nightlife</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="fade-up" style="transition-delay: 0.2s;">
+                    <div class="rounded-xl overflow-hidden shadow-2xl">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.0!2d-80.192!3d25.791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s1424+NE+Miami+Pl%2C+Miami%2C+FL+33132!5e0!3m2!1sen!2sus!4v1"
+                            width="100%"
+                            height="450"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="mt-4 flex items-center gap-2 text-gray-600">
+                        <svg class="w-5 h-5 text-steel-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <p class="font-medium">1424 NE Miami Place, Miami, FL 33132</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-28 bg-steel-900 text-white">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16">
+                <div class="fade-up">
+                    <div class="accent-line mb-6"></div>
+                    <h2 class="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">Contact Us</h2>
+                    <p class="text-white/60 text-lg leading-relaxed mb-10">
+                        Ready to experience luxury living at Square Station? Get in touch to learn about current availability and schedule a private tour.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-steel-500/20 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-steel-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-semibold text-white mb-1 text-sm tracking-wider uppercase">Address</h4>
+                                <p class="text-white/60">1424 NE Miami Place<br>Miami, FL 33132</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-steel-500/20 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-steel-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-semibold text-white mb-1 text-sm tracking-wider uppercase">Phone</h4>
+                                <a href="tel:3058001400" class="text-steel-400 hover:text-steel-300 text-lg transition-colors">305.800.1400</a>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-steel-500/20 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-steel-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-heading font-semibold text-white mb-1 text-sm tracking-wider uppercase">Email</h4>
+                                <a href="mailto:info@squarestationmiami.com" class="text-steel-400 hover:text-steel-300 text-lg transition-colors">info@squarestationmiami.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fade-up" style="transition-delay: 0.2s;">
+                    <form class="bg-white/5 backdrop-blur rounded-xl p-8 border border-white/10" onsubmit="handleSubmit(event)">
+                        <div class="space-y-5">
+                            <div>
+                                <label for="name" class="block text-xs font-heading font-semibold text-white/70 mb-2 tracking-wider uppercase">Name</label>
+                                <input type="text" id="name" name="name" required
+                                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 text-white placeholder-white/30 focus:ring-2 focus:ring-steel-500 focus:border-transparent outline-none transition-all"
+                                    placeholder="Your full name">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-xs font-heading font-semibold text-white/70 mb-2 tracking-wider uppercase">Email</label>
+                                <input type="email" id="email" name="email" required
+                                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 text-white placeholder-white/30 focus:ring-2 focus:ring-steel-500 focus:border-transparent outline-none transition-all"
+                                    placeholder="your@email.com">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-xs font-heading font-semibold text-white/70 mb-2 tracking-wider uppercase">Phone</label>
+                                <input type="tel" id="phone" name="phone"
+                                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 text-white placeholder-white/30 focus:ring-2 focus:ring-steel-500 focus:border-transparent outline-none transition-all"
+                                    placeholder="(555) 123-4567">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-xs font-heading font-semibold text-white/70 mb-2 tracking-wider uppercase">Message</label>
+                                <textarea id="message" name="message" rows="4"
+                                    class="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/10 text-white placeholder-white/30 focus:ring-2 focus:ring-steel-500 focus:border-transparent outline-none transition-all resize-none"
+                                    placeholder="I'm interested in availability..."></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-steel-500 hover:bg-steel-400 text-white py-4 rounded-lg font-heading font-semibold tracking-widest uppercase text-xs transition-all hover:shadow-lg hover:shadow-steel-500/25">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-steel-900 border-t border-white/10 text-white py-10">
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 items-center">
+                <div>
+                    <img src="images/logo.png" alt="Square Station" class="h-10 mb-3 brightness-0 invert">
+                    <p class="text-white/40 text-sm">Luxury Apartment Rentals<br>Miami, Florida</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-white/40 text-sm">1424 NE Miami Place, Miami, FL 33132</p>
+                    <p class="text-white/40 text-sm mt-1">
+                        <a href="tel:3058001400" class="hover:text-steel-400 transition-colors">305.800.1400</a> ·
+                        <a href="mailto:info@squarestationmiami.com" class="hover:text-steel-400 transition-colors">info@squarestationmiami.com</a>
+                    </p>
+                </div>
+                <div class="md:text-right">
+                    <p class="text-white/25 text-sm">&copy; <script>document.write(new Date().getFullYear())</script> Square Station. All rights reserved.</p>
+                    <p class="text-white/15 text-xs mt-1">A <a href="https://melogroup.com" class="hover:text-steel-400 transition-colors">Melo Group</a> Property</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white/70 hover:text-white z-10" aria-label="Close">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button id="prevBtn" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10" onclick="event.stopPropagation(); navigateLightbox(-1)">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="nextBtn" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white z-10" onclick="event.stopPropagation(); navigateLightbox(1)">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <img id="lightboxImg" src="" alt="Enlarged view">
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Sticky nav
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('nav-scrolled', window.scrollY > 60);
+        });
+
+        // Mobile menu
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Hero slideshow
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 5000);
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-up, .fade-in').forEach(el => observer.observe(el));
+
+        // Gallery filter
+        document.querySelectorAll('.gallery-filter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.gallery-filter').forEach(b => {
+                    b.classList.remove('bg-steel-500', 'text-white', 'active');
+                    b.classList.add('bg-gray-100', 'text-gray-600');
+                });
+                btn.classList.add('bg-steel-500', 'text-white', 'active');
+                btn.classList.remove('bg-gray-100', 'text-gray-600');
+
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.gallery-item').forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Lightbox with navigation
+        let lightboxImages = [];
+        let lightboxIndex = 0;
+
+        function collectVisibleImages() {
+            lightboxImages = [];
+            document.querySelectorAll('.gallery-item:not([style*="display: none"]), .floorplan-card').forEach(item => {
+                const img = item.querySelector('img');
+                if (img) lightboxImages.push(img.src.replace(window.location.origin + '/', ''));
+            });
+        }
+
+        function openLightbox(src) {
+            collectVisibleImages();
+            lightboxIndex = lightboxImages.indexOf(src);
+            if (lightboxIndex === -1) lightboxIndex = 0;
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(dir) {
+            lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+            document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        // Form handler
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.textContent = 'Message Sent!';
+            btn.classList.remove('bg-steel-500', 'hover:bg-steel-400');
+            btn.classList.add('bg-green-600');
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.textContent = 'Send Message';
+                btn.classList.add('bg-steel-500', 'hover:bg-steel-400');
+                btn.classList.remove('bg-green-600');
+                btn.disabled = false;
+                e.target.reset();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
