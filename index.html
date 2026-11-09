@@ -790,18 +790,15 @@
         // Form handler
         function handleSubmit(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.textContent = 'Message Sent!';
-            btn.classList.remove('bg-steel-500', 'hover:bg-steel-400');
-            btn.classList.add('bg-green-600');
-            btn.disabled = true;
-            setTimeout(() => {
-                btn.textContent = 'Send Message';
-                btn.classList.add('bg-steel-500', 'hover:bg-steel-400');
-                btn.classList.remove('bg-green-600');
-                btn.disabled = false;
-                e.target.reset();
-            }, 3000);
+            const form = e.target;
+            const subject = encodeURIComponent('Square Station Inquiry from ' + form.name.value.trim());
+            const body = encodeURIComponent(
+                'Name: ' + form.name.value.trim() +
+                '\nEmail: ' + form.email.value.trim() +
+                '\nPhone: ' + (form.phone.value.trim() || 'n/a') +
+                '\n\n' + form.message.value.trim()
+            );
+            window.location.href = 'mailto:info@squarestationmiami.com?subject=' + subject + '&body=' + body;
         }
     </script>
 </body>
